@@ -1,0 +1,27 @@
+#include <limits.h>
+#include <stdio.h>
+
+int getSum(int **arr, int i, int j)
+{
+  int sum = arr[i][j] + arr[i - 1][j - 1] + arr[i - 1][j + 1] + arr[i - 1][j];
+  sum += arr[i + 1][j] + arr[i + 1][j + 1] + arr[i + 1][j - 1];
+  return sum;
+}
+
+int hourglassSum(int **arr, int arr_rows, int arr_columns)
+{
+  int max_sum = INT_MIN;
+  for (int i = 1; i < arr_columns - 1; i++)
+  {
+    for (int j = 1; j < arr_rows - 1; j++)
+    {
+      int curr_sum = getSum(arr);
+      max_sum = max_sum > curr_sum ? max_sum : curr_sum;
+    }
+  }
+  return max_sum;
+}
+
+int main()
+{
+}
