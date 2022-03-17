@@ -1,54 +1,56 @@
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.PriorityQueue;
+import java.util.*;
 
 class Program {
   static class Edge {
-    int vtc;
+    int v;
     int nbr;
     int wt;
 
-    public Edge(int vtc, int nbr, int wt) {
-      this.vtc = vtc;
+    public Edge(int v, int nbr, int wt) {
+      this.v = v;
       this.nbr = nbr;
       this.wt = wt;
     }
   }
 
   static class Pair implements Comparable<Pair> {
-    int vtc;
-    String psf;
-    int wsf;
+    int v;
+    int av;
+    int wt;
 
-    public Pair(int vtc, String psf, int wsf) {
-      this.vtc = vtc;
-      this.psf = psf;
-      this.wsf = wsf;
+    public Pair(int v, int av, int wt) {
+      this.v = v;
+      this.av = av;
+      this.wt = wt;
     }
 
     public int compareTo(Pair o) {
-      return this.wsf - o.wsf;
+      return this.wt - o.wt;
     }
   }
 
-  public static void dijkstra_algo(ArrayList<Edge>[] graph, int src) {
-    PriorityQueue<Pair> pq = new PriorityQueue<>();
-    boolean[] visited = new boolean[7];
-    pq.add(new Pair(src, src + "", 0));
+  static void primsAlgo(ArrayList<Edge>[] graph) {
 
+    PriorityQueue<Pair> pq = new PriorityQueue<>();
+
+    pq.add(new Pair(0, -1, 0));
+    boolean[] visited = new boolean[7];
     while (pq.isEmpty() == false) {
       // r m* w a*
+
       Pair rem = pq.remove();
 
-      if (visited[rem.vtc] == true) {
+      if (visited[rem.v] == true) {
         continue;
       }
-      visited[rem.vtc] = true;
-      System.out.println(rem.vtc + ", " + rem.psf + ", " + rem.wsf);
+      visited[rem.v] = true;
 
-      for (Edge edge : graph[rem.vtc]) {
+      if (rem.av != -1) {
+        System.out.println(rem.v + " - " + rem.av + " @ " + rem.wt);
+      }
+      for (Edge edge : graph[rem.v]) {
         if (visited[edge.nbr] == false) {
-          pq.add(new Pair(edge.nbr, rem.psf + edge.nbr, rem.wsf + edge.wt));
+          pq.add(new Pair(edge.nbr, rem.v, edge.wt));
         }
       }
     }
@@ -58,7 +60,7 @@ class Program {
     ArrayList<Edge>[] graph = new ArrayList[7];
 
     for (int i = 0; i < 7; i++) {
-      graph[i] = new ArrayList<Edge>();
+      graph[i] = new ArrayList<>();
     }
 
     graph[0].add(new Edge(0, 1, 10));
@@ -84,7 +86,6 @@ class Program {
     graph[6].add(new Edge(6, 4, 8));
     graph[6].add(new Edge(6, 5, 3));
 
-    dijkstra_algo(graph, 0);
+    primsAlgo(graph);
   }
-
 }

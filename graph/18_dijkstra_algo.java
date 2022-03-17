@@ -1,27 +1,26 @@
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 
 class Program {
   static class Edge {
-    int vtc;
+    int v;
     int nbr;
     int wt;
 
-    public Edge(int vtc, int nbr, int wt) {
-      this.vtc = vtc;
+    public Edge(int v, int nbr, int wt) {
+      this.v = v;
       this.nbr = nbr;
       this.wt = wt;
     }
   }
 
-  static class Pair implements Comparable<Pair> {
-    int vtc;
+  public static class Pair implements Comparable<Pair> {
+    int v;
     String psf;
     int wsf;
 
-    public Pair(int vtc, String psf, int wsf) {
-      this.vtc = vtc;
+    public Pair(int v, String psf, int wsf) {
+      this.v = v;
       this.psf = psf;
       this.wsf = wsf;
     }
@@ -31,22 +30,24 @@ class Program {
     }
   }
 
-  public static void dijkstra_algo(ArrayList<Edge>[] graph, int src) {
+  public static void dijkstra(ArrayList<Edge>[] graph, int V, int src) {
     PriorityQueue<Pair> pq = new PriorityQueue<>();
-    boolean[] visited = new boolean[7];
+
     pq.add(new Pair(src, src + "", 0));
+    boolean[] visited = new boolean[V];
 
     while (pq.isEmpty() == false) {
-      // r m* w a*
+
       Pair rem = pq.remove();
 
-      if (visited[rem.vtc] == true) {
+      if (visited[rem.v] == true) {
         continue;
       }
-      visited[rem.vtc] = true;
-      System.out.println(rem.vtc + ", " + rem.psf + ", " + rem.wsf);
 
-      for (Edge edge : graph[rem.vtc]) {
+      visited[rem.v] = true;
+      System.out.println(rem.v + ", " + rem.psf + ", " + rem.wsf);
+
+      for (Edge edge : graph[rem.v]) {
         if (visited[edge.nbr] == false) {
           pq.add(new Pair(edge.nbr, rem.psf + edge.nbr, rem.wsf + edge.wt));
         }
@@ -58,7 +59,7 @@ class Program {
     ArrayList<Edge>[] graph = new ArrayList[7];
 
     for (int i = 0; i < 7; i++) {
-      graph[i] = new ArrayList<Edge>();
+      graph[i] = new ArrayList<>();
     }
 
     graph[0].add(new Edge(0, 1, 10));
@@ -84,7 +85,6 @@ class Program {
     graph[6].add(new Edge(6, 4, 8));
     graph[6].add(new Edge(6, 5, 3));
 
-    dijkstra_algo(graph, 0);
+    dijkstra(graph, 7, 0);
   }
-
 }
