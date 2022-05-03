@@ -1,6 +1,12 @@
 import java.util.*;
 
 class Program {
+  /*
+   * Approach:
+   * 1. Remove all leafs of root node manually
+   * 2. call the same function for all children recursively
+   * 
+   */
 
   static class Node {
     int val;

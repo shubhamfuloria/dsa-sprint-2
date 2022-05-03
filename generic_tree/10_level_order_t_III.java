@@ -45,7 +45,7 @@ class Program {
       int size = queue.size();
 
       for (int i = 0; i < size; i++) {
-        Node rem = queue.remove();
+         Node rem = queue.remove();
         System.out.print(rem.val + " ");
 
         // add children of rem

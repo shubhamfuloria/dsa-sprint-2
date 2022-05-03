@@ -1,14 +1,7 @@
-
 import java.util.*;
 
 class Program {
-  /*
-   * We need to find if an element does exist in generic tree or not
-   * 
-   * Approach: Have faith in all children of root, that they will return true if
-   * element does exists in their respective subtrees. THAT'S FUCKING IT :D
-   * 
-   */
+
   static class Node {
     int val;
     List<Node> children;
@@ -62,31 +55,44 @@ class Program {
     }
   }
 
-  public static boolean search(Node root, int data) {
+  static Node predecessor;
+  static Node successor;
+
+  static Node prev;
+
+  public static void solve(Node root, int data) {
+
     if (root.val == data) {
-      return true;
+      predecessor = prev;
     }
+
+    if (prev != null && prev.val == data) {
+      successor = root;
+    }
+    prev = root;
 
     for (Node child : root.children) {
-      boolean ifPresent = search(child, data);
-      if (ifPresent == true) {
-        return true;
-      }
+      solve(child, data);
     }
 
-    return false;
   }
+
+  
 
   public static void main(String[] args) {
 
-    int[] Eular = { 10, 20, 50, -1, 60, -1, -1, 30, 70, -1, 80, 110, -1, 120, -1, -1, 90, -1, -1, 40, 100, -1, -1, -1 };
+    int[] Eular1 = { 10, 20, 50, -1, 60, -1, -1, 30, 70, -1, 80, 110, -1, 120, -1, -1, 90, -1, -1, 40, 100, -1, -1,
+        -1 };
+    int[] Eular2 = { 20, 40, 90, -1, 60, -1, -1, 70, 70, -1, 80, 110, -1, 120, -1, -1, 90, -1, -1, 40, 100, -1, -1,
+        -1 };
+
     // this array represents Eular path of N-ary tree
     // -1 represents Eular is going upward from right side of node
+    Node root = generateTree(Eular1);
 
-    Node root = generateTree(Eular);
+    solve(root, 110);
 
-    boolean res = search(root, 50);
+    System.out.println(predecessor.val + " " + successor.val);
 
-    System.out.println(res);
   }
 }

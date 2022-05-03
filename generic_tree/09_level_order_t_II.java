@@ -1,7 +1,13 @@
 import java.util.*;
 
 class Program {
-
+  /*
+   * This tenchnique of level order traversal uses a delimiter (marker) to mark
+   * on each level, that this is the end of level
+   * 
+   * APPROACH: Whevever we see it is end of level we add a null to the queue
+   * 
+   */
   static class Node {
     int val;
     List<Node> children;

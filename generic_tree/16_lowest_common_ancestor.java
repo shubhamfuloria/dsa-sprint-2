@@ -1,13 +1,12 @@
+
 import java.util.*;
 
 class Program {
-
   /*
-   * Aproach:
-   * -> faith: children already know how to mirror subtree
-   * so we can just mirror subtree by calling mirror(children)
-   * reverse the root's children
+   * We need to find if an element does exist in generic tree or not
    * 
+   * Approach: Have faith in all children of root, that they will return true if
+   * element does exists in their respective subtrees. THAT'S FUCKING IT :D
    * 
    */
   static class Node {
@@ -63,14 +62,41 @@ class Program {
     }
   }
 
-  public static void mirror(Node root) {
-
-    // mirror all children, then mirror root
+  public static List<Integer> rootToNodePath(Node root, int dest) {
+    if (root.val == dest) {
+      List<Integer> res = new ArrayList<>();
+      res.add(root.val);
+      return res;
+    }
 
     for (Node child : root.children) {
-      mirror(child);
+      List<Integer> res = rootToNodePath(child, dest);
+      if (res != null) {
+        res.add(root.val);
+        return res;
+      }
     }
-    Collections.reverse(root.children);
+
+    return null;
+  }
+
+  public static int lowestCommonAncestor(Node root, int val1, int val2) {
+
+    List<Integer> path1 = rootToNodePath(root, val1);
+    List<Integer> path2 = rootToNodePath(root, val2);
+
+    int i = path1.size() - 1;
+    int j = path2.size() - 1;
+
+    while (i >= 0 && j >= 0 && path1.get(i) == path2.get(j)) {
+      i--;
+      j--;
+    }
+
+    i++;
+    j++;
+
+    return path1.get(i);
   }
 
   public static void main(String[] args) {
@@ -81,9 +107,8 @@ class Program {
 
     Node root = generateTree(Eular);
 
-    display(root);
-    mirror(root);
-    display(root);
+    int res = lowestCommonAncestor(root, 110, 90);
 
+    System.out.println(res);
   }
 }

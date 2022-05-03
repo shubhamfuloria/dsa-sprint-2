@@ -1,13 +1,12 @@
+
 import java.util.*;
 
 class Program {
-
   /*
-   * Aproach:
-   * -> faith: children already know how to mirror subtree
-   * so we can just mirror subtree by calling mirror(children)
-   * reverse the root's children
+   * We need to find if an element does exist in generic tree or not
    * 
+   * Approach: Have faith in all children of root, that they will return true if
+   * element does exists in their respective subtrees. THAT'S FUCKING IT :D
    * 
    */
   static class Node {
@@ -63,14 +62,22 @@ class Program {
     }
   }
 
-  public static void mirror(Node root) {
-
-    // mirror all children, then mirror root
+  public static List<Integer> nodeToRootPath(Node root, int dest) {
+    if (root.val == dest) {
+      List<Integer> res = new ArrayList<>();
+      res.add(root.val);
+      return res;
+    }
 
     for (Node child : root.children) {
-      mirror(child);
+      List<Integer> res = nodeToRootPath(child, dest);
+      if (res != null) {
+        res.add(root.val);
+        return res;
+      }
     }
-    Collections.reverse(root.children);
+
+    return null;
   }
 
   public static void main(String[] args) {
@@ -81,9 +88,10 @@ class Program {
 
     Node root = generateTree(Eular);
 
-    display(root);
-    mirror(root);
-    display(root);
-
+    List<Integer> path = nodeToRootPath(root, 110);
+    for (int el : path) {
+      System.out.print(el + " ");
+    }
+    System.out.println();
   }
 }

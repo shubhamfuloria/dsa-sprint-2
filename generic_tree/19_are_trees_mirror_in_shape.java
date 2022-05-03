@@ -2,14 +2,6 @@ import java.util.*;
 
 class Program {
 
-  /*
-   * Aproach:
-   * -> faith: children already know how to mirror subtree
-   * so we can just mirror subtree by calling mirror(children)
-   * reverse the root's children
-   * 
-   * 
-   */
   static class Node {
     int val;
     List<Node> children;
@@ -63,27 +55,38 @@ class Program {
     }
   }
 
-  public static void mirror(Node root) {
+  public static boolean areMirror(Node root1, Node root2) {
 
-    // mirror all children, then mirror root
-
-    for (Node child : root.children) {
-      mirror(child);
+    if (root1.children.size() != root2.children.size()) {
+      return false;
     }
-    Collections.reverse(root.children);
+
+    for (int i = 0; i < root1.children.size(); i++) {
+      int j = root1.children.size() - 1 - i;
+      Node child1 = root1.children.get(i);
+      Node child2 = root2.children.get(j);
+
+      if (areMirror(child1, child2) == false) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   public static void main(String[] args) {
 
-    int[] Eular = { 10, 20, 50, -1, 60, -1, -1, 30, 70, -1, 80, 110, -1, 120, -1, -1, 90, -1, -1, 40, 100, -1, -1, -1 };
+    int[] Eular1 = { 10, 20, 50, -1, 60, -1, -1, 30, 70, -1, 80, 110, -1, 120, -1, -1, 90, -1, -1, 40, 100, -1, -1,
+        -1 };
+    int[] Eular2 = { 20, 40, 90, -1, 60, -1, -1, 70, 70, -1, 80, 110, -1, 120, -1, -1, 90, -1, -1, 40, 100, -1, -1,
+        -1 };
+
     // this array represents Eular path of N-ary tree
     // -1 represents Eular is going upward from right side of node
+    Node root1 = generateTree(Eular1);
+    Node root2 = generateTree(Eular2);
 
-    Node root = generateTree(Eular);
-
-    display(root);
-    mirror(root);
-    display(root);
-
+    boolean res = areMirror(root1, root2);
+    System.out.println(res);
   }
 }
